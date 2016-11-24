@@ -1,2 +1,4 @@
 # tinify
-nodejs tinify
+
+
+node index.js argv
