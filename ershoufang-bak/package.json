@@ -1,0 +1,18 @@
+{
+  "name": "houzhq",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "gulp sprite"
+  },
+  "keywords": [],
+  "author": "houzhiqiang",
+  "license": "ISC",
+  "devDependencies": {
+    "gulp": "^3.9.0"
+  },
+  "dependencies": {
+    "gulp.spritesmith": "^6.0.0"
+  }
+}

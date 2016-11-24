@@ -1,0 +1,90 @@
+@import "../component/sprite.less";
+
+.mh-mask{
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: #000\9;
+  filter: alpha(opacity=3);
+  background: -webkit-radial-gradient(center,closest-side,rgba(255,255,255,0),rgba(0,0,0,.03));
+  background: -moz-radial-gradient(center,closest-side,rgba(255,255,255,0),rgba(0,0,0,.03));
+  background: -ms-radial-gradient(center,closest-side,rgba(255,255,255,0),rgba(0,0,0,.03));
+  background: -o-radial-gradient(center,closest-side,rgba(255,255,255,0),rgba(0,0,0,.03));
+  background: radial-gradient(center,closest-side,rgba(255,255,255,0),rgba(0,0,0,.03));
+}
+
+.btn-large{
+  display: block;
+  border-radius: 2px;
+  border: 1px solid #d9dcde;
+  width:100%;
+  height: 43px;
+  line-height: 43px;
+  font-weight: bold;
+  text-align: center;
+  color: #394043;
+  font-size: 14px;
+  cursor: pointer;
+  background-color: #fff;
+  &:hover{
+    background-color:#f8f8f9;
+    text-decoration: none;
+  }
+}
+
+.logo_dl{
+  display: inline-block;
+  vertical-align: -9px;
+  .retina-sprite(@logo-dl-group);
+}
+// nav 标题菜单公用样式
+@containerWidth: 1150px;
+.menu{
+  width: @containerWidth;
+  margin:0 auto;
+  .menuLeft{
+    display: inline-block;
+    width:85%;
+    .logo{
+      display: inline-block;
+      .retina-sprite(@logo-group);
+      vertical-align: middle;
+    }
+    .typeList{
+      display: inline-block;
+      margin-left: 87/2px;
+      font-size: 16px;
+      line-height: 26px;
+      li{
+        display: inline-block;
+        margin-right: 30px;
+        a{
+          color:#394043;
+          text-decoration: none;
+        }
+        &.selected{
+          a{
+            color:#00ae66;
+          }
+        }
+      }
+    }
+  }
+  .app{
+    display: inline-block;
+    width:15%;
+    text-align: right;
+    a{
+      color:#323333;
+      font-size: 16px;
+      i{
+        display: inline-block;
+        .retina-sprite(@app-group);
+        margin-right: 10px;
+        vertical-align: -3px;
+      }
+    }
+  }
+}
