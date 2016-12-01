@@ -45,6 +45,26 @@ if(progress.all === 0) {
     console.time('耗时')
 }
 
+
+
+/**
+ * 获取所有图片的大小
+ */
+const targetFileListSize = []
+targetFileList.forEach(v => {
+  const stats = fs.statSync(v)
+  targetFileListSize.push(stats.size)
+})
+Array.prototype.sum = function() {
+  let sum = 0
+  this.forEach(v => sum+=v)
+  return sum
+}
+console.log(`共${targetFileList.length}张图片, ${Math.ceil(targetFileListSize.sum()/1024)} Kb`)
+
+return
+
+
 targetFileList.forEach((v, i) => {
     const source = tinify.fromFile(v)
     source.toFile(v, err => {
