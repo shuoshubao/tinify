@@ -1,48 +1,66 @@
 const fs = require('fs')
 const tinify = require('tinify')
 tinify.key = 'XXIRu48sw8x3SMA4cA0NixJgib573DPX'
+const fileList = []
 
-
-let fileList = []
-
-function walk(path) {
+const getFileList = path => {
     var dirList = fs.readdirSync(path)
-    dirList.forEach(item => {
-        if (!['.DS_Store', 'node_modules', 'spriteImg'].includes(item)) {
-            if (fs.statSync(path + '/' + item).isDirectory()) {
-                walk(path + '/' + item)
-            } else {
-                fileList.push(path + '/' + item)
-            }
+    dirList.forEach(v => {
+        if(['node_modules'].includes(v)) {
+            return
+        }
+        if (fs.statSync(path + '/' + v).isDirectory()) {
+            getFileList(path + '/' + v)
+        } else {
+            fileList.push(path + '/' + v)
         }
     })
 }
 
-if (!process.argv[2]) {
+const path = process.argv[2]
+
+if (!path) {
     console.log('必须传入入口地址')
     return
 }
-console.time('获取图片列表耗时')
-walk(process.argv[2])
-console.timeEnd('获取图片列表耗时')
-fileList = fileList.filter((v, i) => {
+
+getFileList(path)
+
+const targetFileList = fileList.filter(v => {
     return (v.endsWith('png') || v.endsWith('jpg')) && !v.includes('._')
 })
-if (fileList.length == 0) {
-    console.log(process.argv[2] + '该目录下没有图片')
-    return
-}else if (fileList.length > 100) {
-    console.log(process.argv[2] + '该目录下图片过多：' + fileList.length)
-    return
+
+const progress = {
+    all: targetFileList.length,
+    success: 0,
+    failure: 0,
+    failureList: []
 }
 
-fileList.forEach(v => {
+if(progress.all === 0) {
+    console.log(`未发现 .png 或 .jpg 类型的文件`)
+    return
+}else {
+    console.log(`开始: 共 ${progress.all} 个文件`)
+    console.time('耗时')
+}
+
+targetFileList.forEach((v, i) => {
     const source = tinify.fromFile(v)
     source.toFile(v, err => {
         if (err) {
-            console.log(`${v}压缩失败`)
+            progress.failure++
+            progress.failureList.push(v)
         } else {
-            console.log(`${v}压缩成功`)
+            progress.success++
+        }
+        console.log(`正在处理第 ${i}/${progress.all} 个文件, 成功 ${progress.success} 个, 失败 ${progress.failure} 个`)
+        if(i === progress.all - 1) {
+            console.log('结束')
+            console.timeEnd('耗时')
+            if(progress.failureList.length) {
+                console.log(['处理失败的文件:'].concat(progress.failureList).join('\n'))
+            }
         }
     })
 })
